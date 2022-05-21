@@ -39,7 +39,7 @@ with Flow('spothist-etl') as flow_etl:
     write_to_db(db_configs, df_art, schema='staging', table='artist')
 
 if __name__ == '__main__':
-    flow_etl.run()
+    flow_etl.run()  # Ok
     # flow_etl.register(project_name='spothist-etl')
 
 # Project
