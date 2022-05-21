@@ -36,4 +36,3 @@ TBC
 ***
 * The Spotify API provides multiple genres for each artist which are far too granular for analysis.
   * Therefore the multiple, granular genres need to be mapped to a single high-level genre.
-* 
