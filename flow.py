@@ -43,13 +43,14 @@ if __name__ == '__main__':
     # flow_etl.register(project_name='spothist-etl')
 
 # Project
-# TODO: Implement data validation
+# TODO: Implement data validation: what happens when API result is blank etc.
 # TODO: Setup config file for tables as operations are the same
+# TODO: Add log file to track last run and timestamp - extract after that timestamp
 
 # Prefect
 # TODO: Set up a log file which tracks last run Prefect?
 # TODO: Get Prefect dbt task
 
 # Structure/packaging/cloud
-# TODO: Set up project on GitHub and sync with PyCharm
+# TODO: Set up GitHub branches etc.
 # TODO: Create Docker image of project
