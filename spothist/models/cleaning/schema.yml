@@ -1,0 +1,46 @@
+version: 2
+
+models:
+
+  - name: artist
+    description: "Cleansed artist table"
+    columns:
+      - name: artist_id
+        description: "Artist ID"
+        tests:
+          - unique
+          - not_null
+      - name: artist_name
+        description: "Artist's name"
+      - name: genres
+        description: "Artist's genre(s)"
+      - name: time_updated
+        description: "Timestamp of when row was updated"
+
+  - name: listening_history
+    description: "Cleansed listening history table"
+    columns:
+      - name: track_id
+        description: "Unique track ID"
+        tests:
+          - not_null
+      - name: artist_id
+        description: "Artist ID"
+      - name: album_id
+        description: "Album ID"
+      - name: artist_name
+        description: "Artist's name"
+      - name: album_name
+        description: "Album's name"
+      - name: track_name
+        description: "Track's name"
+      - name: track_duration
+        description: "Track's duration"
+      - name: release_date
+        description: "Album's release date"
+      - name: played_at
+        description: "Timestamp of when track was played"
+      - name: played_at_unix
+        description: "Unix timestamp of when track was played"
+      - name: track_number
+        description: "Track's number on album"

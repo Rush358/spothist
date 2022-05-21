@@ -1,0 +1,47 @@
+
+
+============================== 2022-04-18 22:21:06.230049 | a61208bb-b6ac-4bf1-afcb-0a12d7019156 ==============================
+22:21:06.230049 [info ] [MainThread]: Running with dbt=1.0.4
+22:21:06.231061 [debug] [MainThread]: running dbt with arguments Namespace(record_timing_info=None, debug=None, log_format=None, write_json=None, use_colors=None, printer_width=None, warn_error=None, version_check=None, partial_parse=None, single_threaded=False, use_experimental_parser=None, static_parser=None, profiles_dir='C:\\Users\\Rush\\.dbt', send_anonymous_usage_stats=None, fail_fast=None, event_buffer_size=None, project_dir=None, profile=None, target=None, vars='{}', log_cache_events=False, project_name='spothist', skip_profile_setup=False, defer=None, state=None, cls=<class 'dbt.task.init.InitTask'>, which='init', rpc_method=None)
+22:21:06.231061 [debug] [MainThread]: Tracking: tracking
+22:21:06.344383 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002152E4BD4F0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002152E4BD730>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002152E4BD580>]}
+22:21:06.344383 [info ] [MainThread]: Creating dbt configuration folder at C:\Users\Rush\.dbt
+22:21:06.346386 [debug] [MainThread]: Starter project path: e:\users\rushil\documents\python\spothist\venv\lib\site-packages\dbt\include\starter_project
+22:21:13.289961 [info ] [MainThread]: Profile spothist written to C:\Users\Rush\.dbt\profiles.yml using target's sample configuration. Once updated, you'll be able to start developing with dbt.
+22:21:13.290961 [info ] [MainThread]: 
+Your new dbt project "spothist" was created!
+
+For more information on how to configure the profiles.yml file,
+please consult the dbt documentation here:
+
+  https://docs.getdbt.com/docs/configure-your-profile
+
+One more thing:
+
+Need help? Don't hesitate to reach out to us via GitHub issues or on Slack:
+
+  https://community.getdbt.com/
+
+Happy modeling!
+
+22:21:13.291961 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002152E4BD640>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002152E4BD8B0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000002152E4BD850>]}
+
+
+============================== 2022-04-18 22:25:04.849012 | 8ecce1df-8a61-4366-99fc-bcdc19c14de8 ==============================
+22:25:04.849012 [info ] [MainThread]: Running with dbt=1.0.4
+22:25:04.849995 [debug] [MainThread]: running dbt with arguments Namespace(record_timing_info=None, debug=None, log_format=None, write_json=None, use_colors=None, printer_width=None, warn_error=None, version_check=None, partial_parse=None, single_threaded=False, use_experimental_parser=None, static_parser=None, profiles_dir='C:\\Users\\Rush\\.dbt', send_anonymous_usage_stats=None, fail_fast=None, event_buffer_size=None, project_dir=None, profile=None, target=None, vars='{}', log_cache_events=False, config_dir=True, defer=None, state=None, cls=<class 'dbt.task.debug.DebugTask'>, which='debug', rpc_method=None)
+22:25:04.849995 [debug] [MainThread]: Tracking: tracking
+22:25:04.965957 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001989B45E460>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001989B45ED30>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001989B45E4F0>]}
+22:25:04.965957 [info ] [MainThread]: To view your profiles.yml file, run:
+
+start C:\Users\Rush\.dbt
+22:25:04.966956 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001989B45EF40>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001989B45E2B0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x000001989B45E520>]}
+
+
+============================== 2022-04-28 21:44:04.062936 | ae815e3e-68ce-4ca7-9d5e-f04b6738c858 ==============================
+21:44:04.062936 [info ] [MainThread]: Running with dbt=1.0.4
+21:44:04.073916 [debug] [MainThread]: running dbt with arguments Namespace(record_timing_info=None, debug=None, log_format=None, write_json=None, use_colors=None, printer_width=None, warn_error=None, version_check=None, partial_parse=None, single_threaded=False, use_experimental_parser=None, static_parser=None, profiles_dir='C:\\Users\\Rush\\.dbt', send_anonymous_usage_stats=None, fail_fast=None, event_buffer_size=None, project_dir=None, profile=None, target=None, vars='{}', log_cache_events=False, project_name=None, skip_profile_setup=False, defer=None, state=None, cls=<class 'dbt.task.init.InitTask'>, which='init', rpc_method=None)
+21:44:04.073916 [debug] [MainThread]: Tracking: tracking
+21:44:04.194888 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'start', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000026834747FD0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000026834747820>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000026834747580>]}
+21:44:12.641442 [info ] [MainThread]: A project called spothist already exists here.
+21:44:12.641442 [debug] [MainThread]: Sending event: {'category': 'dbt', 'action': 'invocation', 'label': 'end', 'context': [<snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x00000268347618B0>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000026834761A00>, <snowplow_tracker.self_describing_json.SelfDescribingJson object at 0x0000026834761730>]}

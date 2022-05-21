@@ -1,0 +1,85 @@
+version: 2
+
+models:
+
+  - name: fact_listening_history
+    description: "Fact table for listening history"
+    columns:
+      - name: id
+        description: "Combination of track ID and unix timestamp of when track was played (PK)"
+        tests:
+          - unique
+          - not_null
+      - name: fk_track_id
+        description: "Track ID (FK:linking to dim_track)"
+        tests:
+          - relationships:
+              to: ref('dim_track')
+              field: track_id
+      - name: fk_artist_id
+        description: "Artist ID (FK:linking to dim_artist)"
+        tests:
+          - relationships:
+              to: ref('dim_artist')
+              field: artist_id
+      - name: fk_album_id
+        description: "Album ID (FK:linking to dim_album)"
+        tests:
+          - relationships:
+              to: ref('dim_album')
+              field: album_id
+      - name: played_at_unix
+        description: "Unix timestamp of when track was played"
+      - name: played_at
+        description: "Timestamp of when track was played"
+      - name: time_updated
+        description: "Timestamp of when row was updated"
+
+  - name: dim_album
+    description: "Dimension table for album - SCD Type 1"
+    columns:
+      - name: album_id
+        description: "Album ID (PK)"
+        tests:
+          - unique
+          - not_null
+      - name: album_name
+        description: "Album name"
+      - name: release_date
+        description: "Album's release date"
+      - name: time_updated
+        description: "Timestamp of when row was updated"
+
+  - name: dim_artist
+    description: "Dimension table for artist - SCD Type 1"
+    columns:
+      - name: artist_id
+        description: "Artist ID (PK)"
+        tests:
+          - unique
+          - not_null
+      - name: artist_name
+        description: "Artist's name"
+      - name: genres
+        description: "Artist's genre(s)"
+      - name: time_updated
+        description: "Timestamp of when row was updated"
+
+  - name: dim_track
+    description: "Dimension table for track - SCD Type 1"
+    columns:
+        - name: track_id
+          description: "Track ID (PK)"
+          tests:
+            - unique
+            - not_null
+        - name: track_name
+          description: "Track's name"
+        - name: track_duration_sec
+          description: "Track's duration in seconds"
+        - name: track_duration_str
+          description: "Track's duration represented by mm:ss string"
+        - name: track_number
+          description: "Track's number on album"
+        - name: time_updated
+          description: "Timestamp of when row was updated"

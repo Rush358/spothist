@@ -1,0 +1,7 @@
+pandas~=1.4.2
+psycopg2~=2.9.3
+PyYAML~=6.0
+SQLAlchemy~=1.4.35
+prefect~=1.2.0
+spotipy~=2.19.0
+python-dotenv~=0.20.0
