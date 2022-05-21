@@ -36,7 +36,7 @@ with Flow('spothist-etl') as flow_etl:
     # load_df_to_sql(df_lh, schema='staging', table='listening_history', engine=engine)
     # load_df_to_sql(df_art, schema='staging', table='artist', engine=engine)
     write_to_db(db_configs, df_lh, schema='staging', table='listening_history')
-    write_to_db(db_configs, df_lh, schema='staging', table='artist')
+    write_to_db(db_configs, df_art, schema='staging', table='artist')
 
 if __name__ == '__main__':
     flow_etl.run()
