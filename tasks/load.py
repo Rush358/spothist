@@ -79,5 +79,6 @@ def write_to_db(config: dict, df: pd.DataFrame, schema: str, table: str):
     with engine.begin() as connection:
         df.to_sql(table, con=engine, schema=schema, if_exists='replace', index=False, chunksize=1000, method='multi')
 
+
 if __name__ == '__main__':
     get_configs.run()

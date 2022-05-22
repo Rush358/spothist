@@ -4,8 +4,8 @@ from prefect import Flow
 from prefect.tasks.dbt import DbtShellTask
 from prefect.schedules import IntervalSchedule
 
-from tasks.extract import auth_and_connect_listening_history, auth_and_connect_artist, get_listening_history,\
-    get_artist, build_archive_directory, write_dict_to_json
+from tasks.extract import create_oauth_manager, create_client_credentials_manager, get_listening_history, \
+    get_artist, build_archive_directory, write_dict_to_json, create_spotify_client
 from tasks.transform import flatten_listening_history_dict, flatten_artist_dict, dict_to_df
 from tasks.load import get_configs, create_db_engine, load_df_to_sql, write_to_db
 
@@ -15,32 +15,37 @@ from tasks.load import get_configs, create_db_engine, load_df_to_sql, write_to_d
 with Flow('spothist-etl') as flow_etl:
 
     # Extract / transform
-    sp_lh = auth_and_connect_listening_history()  # Authenticate and access
+    oauth_manager = create_oauth_manager(scope='user-read-recently-played')  # Authenticate and access
+    sp_lh = create_spotify_client(auth_manager=oauth_manager)
+
     dict_lh = get_listening_history(sp_lh, limit=5)  # Extract
-    dict_lh_flat = flatten_listening_history_dict(dict_lh)  # Transform
+    dict_lh_flat = flatten_listening_history_dict(dictionary=dict_lh)  # Transform
 
-    sp_art = auth_and_connect_artist()  # Authenticate and access
+    client_credentials_manager = create_client_credentials_manager()
+    sp_art = create_spotify_client(auth_manager=client_credentials_manager)  # Authenticate and access
+
     dict_art = get_artist(sp_art, artists=dict_lh_flat['artist_id'])  # Extract artists in history
-    dict_art_flat = flatten_artist_dict(dict_art)  # Transform
+    dict_art_flat = flatten_artist_dict(dictionary=dict_art)  # Transform
 
+    # Archive responses
     dir_archive = build_archive_directory()  # Create archive directory
-    write_dict_to_json(dictionary=dict_art, directory=dir_archive)  # Write raw responses to directory
-    write_dict_to_json(dictionary=dict_lh, directory=dir_archive)
+    write_dict_to_json(dictionary=dict_art, directory=dir_archive, filename='artist')  # Archive raw files
+    write_dict_to_json(dictionary=dict_lh, directory=dir_archive, filename='listening_history')
 
     # Transform
-    df_lh = dict_to_df(dict_lh_flat)
-    df_art = dict_to_df(dict_art_flat)
-
-    #  Load
+    df_lh = dict_to_df(dictionary=dict_lh_flat)
+    df_art = dict_to_df(dictionary=dict_art_flat)
+    #
+    # #  Load
     db_configs = get_configs()
     # load_df_to_sql(df_lh, schema='staging', table='listening_history', engine=engine)
     # load_df_to_sql(df_art, schema='staging', table='artist', engine=engine)
-    write_to_db(db_configs, df_lh, schema='staging', table='listening_history')
-    write_to_db(db_configs, df_art, schema='staging', table='artist')
+    # write_to_db(db_configs, df_lh, schema='staging', table='listening_history')
+    # write_to_db(db_configs, df_art, schema='staging', table='artist')
 
 if __name__ == '__main__':
-    flow_etl.run()  # Ok
-    # flow_etl.register(project_name='spothist-etl')
+    # flow_etl.run()
+    flow_etl.register(project_name='spothist-etl')
 
 # Project
 # TODO: Implement data validation: what happens when API result is blank etc.

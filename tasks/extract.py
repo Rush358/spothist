@@ -1,58 +1,51 @@
 import os
 import json
 from datetime import datetime
+from pathlib import Path
 
-import spotipy
-from spotipy import Spotify, SpotifyException
+from spotipy import Spotify
 from spotipy.oauth2 import SpotifyOAuth, SpotifyClientCredentials
 from prefect import task
 
 from settings import client_id, client_secret
+from definitions import ROOT_DIR
+
+@task
+def create_oauth_manager(scope: str) -> object:
+    """
+    Takes in user credentials and  scope then creates and returns OAuth flow manager, limited to specified scope.
+    """
+
+    redirect_uri = 'http://localhost:8888/'
+
+    oauth_manager = SpotifyOAuth(client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri,
+                                 scope=scope)
+
+    return oauth_manager
 
 
 @task
-def build_archive_directory() -> str:
-    str_date = datetime.now().strftime('%Y-%m-%d')
-    directory_snapshot = f'E:\\Users\\Rushil\\Documents\\Python\\spothist\\data\\{str_date}'
-
-    if not os.path.exists(directory_snapshot):
-        os.mkdir(directory_snapshot)
-
-    return directory_snapshot
-
-
-@task
-def auth_and_connect_listening_history() -> object:
+def create_client_credentials_manager() -> object:
     """
-    Takes user credentials, authenticates user and returns Spotify API client
-    :return: Spotify API client
-    """
-
-    redirect_uri = 'http://localhost:8080/'  # TODO Do something with this?
-    scope = 'user-read-recently-played'
-
-    auth_manager = SpotifyOAuth(client_id=client_id, client_secret=client_secret, redirect_uri=redirect_uri,
-                                scope=scope)
-    sp_lh = Spotify(auth_manager=auth_manager)
-
-    return sp_lh
-
-
-@task
-def auth_and_connect_artist() -> object:
-    """
-    Takes user credentials, authenticates user and returns Spotify API client
-    :return: Spotify API client
+    Takes in user credentials then creates and returns client credentials flow manager.
     """
 
     client_credentials_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret)
-    sp_art = Spotify(client_credentials_manager=client_credentials_manager)
 
-    return sp_art
+    return client_credentials_manager
 
 
 @task
-def get_listening_history(sp_lh: object, limit: int = 5) -> dict:
+def create_spotify_client(auth_manager: object) -> Spotify:
+    """
+    Takes in auth manager and returns Spotify client with appropriate permissions.
+    """
+    sp = Spotify(auth_manager=auth_manager)
+
+    return sp
+
+@task
+def get_listening_history(sp_lh: object, limit: int = 5) -> Spotify:
     """
     Takes in parameter and returns a dictionary with the last specified number of tracks (defaulting to last five).
     Saves a snapshot of the extract to a JSON file.
@@ -64,7 +57,7 @@ def get_listening_history(sp_lh: object, limit: int = 5) -> dict:
 
 
 @task
-def get_artist(sp_art: object, artists: list) -> dict:  # TODO: Check if there's a limit
+def get_artist(sp_art: object, artists: list) -> dict:
     """
     Takes in parameter and returns a dictionary with artist information.
     Saves a snapshot of the extract to a JSON file.
@@ -77,20 +70,34 @@ def get_artist(sp_art: object, artists: list) -> dict:  # TODO: Check if there's
 
 
 @task
-def write_dict_to_json(dictionary: dict, directory: str):
+def write_dict_to_json(dictionary: dict, directory: str, filename: str):
     """
     Takes in (Python) dict and writes it as a JSON file in a specified directory.
     """
 
     str_timestamp = datetime.utcnow().strftime('%Y-%m-%dT%H%M%S')
-    file_path = directory + f'\\artists_{str_timestamp}.json'
+    filename_timestamp = f'{filename}_{str_timestamp}.json'
 
-    with open(file_path, 'w') as json_file:  # TODO change to pathlib
+    file_path = ROOT_DIR / directory / filename_timestamp
+
+    with open(file_path, 'w') as json_file:
         json.dump(dictionary, json_file, indent=4)
 
 
+@task
+def build_archive_directory() -> Path:
+    str_date = datetime.now().strftime('%Y-%m-%d')
+    dir_archive = ROOT_DIR / 'data' / str_date
+
+    if not os.path.exists(dir_archive):
+        os.mkdir(dir_archive)
+
+    return dir_archive
+
+
 if __name__ == '__main__':
-    directory_archive = build_archive_directory.run()
-    sp_lh = auth_and_connect_listening_history.run()
-    dict_lh = get_listening_history.run(sp_lh, limit=1)
-    write_dict_to_json(dict_lh, directory_archive)
+    create_oauth_manager.run(scope='user-read-recently-played')
+    # directory_archive = build_archive_directory.run()
+    # sp_lh = create_oauth_manager.run()
+    # dict_lh = get_listening_history.run(sp_lh, limit=1)
+    # write_dict_to_json(dict_lh, directory_archive)
