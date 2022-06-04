@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-client_id = os.environ['client_id']
-client_secret = os.environ['client_secret']
-username = os.environ['username']
-password = os.environ['password']
+sp_client_id = os.environ['sp_client_id']
+sp_client_secret = os.environ['sp_client_secret']
+pgdb_username = os.environ['pgdb_username']
+pgdb_password = os.environ['pgdb_password']

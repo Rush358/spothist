@@ -1,4 +1,4 @@
-db_staging:
+db_spothist:
     dialect: postgresql
     driver: psycopg2
     host: localhost
