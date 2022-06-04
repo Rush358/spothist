@@ -8,10 +8,10 @@ from tasks.extract import create_oauth_manager, create_client_credentials_manage
 from tasks.archive import build_archive_directory, write_dict_to_json
 from tasks.transform import flatten_listening_history_dict, flatten_artist_dict, dict_to_df
 from tasks.load import write_to_db
-from tasks.load import write_df, get_configs
+from tasks.load import write_df
 
 from utils.logger import get_last_run
-
+from utils.config import get_configs
 # schedule = IntervalSchedule(start_date=datetime.now() + timedelta(seconds=10),
 #                             interval=timedelta(minutes=10))
 
@@ -44,13 +44,13 @@ with Flow('spothist-etl') as flow_etl:
 
     # # Load
     configs = get_configs()
-    # write_df(df=df_lh, configs=configs, database='db_spothist', schema='staging', table='listening_history')
+    write_df(df=df_lh, configs=configs, database='db_spothist', schema='staging', table='listening_history')
     # write_df(df=df_art, configs=configs, database='db_spothist', schema='staging', table='artist')
-    write_to_db(configs, df_lh, schema='staging', table='listening_history')
+    # write_to_db(configs, df_lh, schema='staging', table='listening_history')
 
 if __name__ == '__main__':
-    # flow_etl.run()
-    flow_etl.register(project_name='spothist-etl')
+    flow_etl.run()
+    # flow_etl.register(project_name='spothist-etl')
 
 # Project
 # TODO: Implement data validation: what happens when API result is blank etc.

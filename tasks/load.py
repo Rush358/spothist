@@ -1,20 +1,9 @@
 import pandas as pd
-import psycopg2
-import yaml
 from sqlalchemy import create_engine
 from prefect import task
 
-from definitions import CONFIG_PATH
 from settings import pgdb_username, pgdb_password
-from tasks.database import Postgres
-
-
-@task
-def get_configs():
-    with open(CONFIG_PATH, 'r') as yml_file:
-        configs = yaml.safe_load(yml_file)
-
-    return configs
+from utils.database import Postgres
 
 
 @task
@@ -40,8 +29,11 @@ def write_to_db(config: dict, df: pd.DataFrame, schema: str, table: str):
 @task
 def write_df(df: pd.DataFrame, configs, database: str, schema: str, table: str):
 
-    with Postgres(configs=configs, database=database) as pg:
-        pg.write_df(df, schema, table)
+    # with Postgres(configs=configs, database=database) as pg:
+    #     pg.write_df(df, schema, table)
+
+    pg = Postgres(configs=configs, database=database)
+    pg.write_df(df, schema, table)
 
 
 if __name__ == '__main__':
