@@ -15,35 +15,35 @@ class Postgres:
         self.host = self.config['host']
         self.port = self.config['port']
         self.database = self.config['database']
-        # self.user = 'postgres' # pgdb_username
-        # self.password = 'postmanpat' # pgdb_password
+        self.user = 'postgres'
+        self.password = 'postmanpat'
 
-    # def connect(self):
-    #     conn = psycopg2.connect(database=self.database, user=self.user, password=self.password, host=self.host,
-    #                             port=self.port)
-    #     return conn
-    #
-    # def __enter__(self):
-    #     self.conn = self.connect()
-    #     return self
-    #
-    # def __exit__(self, exc_type, exc_value, traceback):
-    #     self.conn.close()
-    #
-    # def query_db(self, query: str):
-    #     conn = self.connect()
-    #     cursor = conn.cursor()
-    #
-    #     cursor.execute(query)
-    #     result = cursor.fetchone()
-    #
-    #     cursor.close()
-    #     conn.close()
-    #
-    #     return result
+    def connect(self):
+        conn = psycopg2.connect(database=self.database, user=self.user, password=self.password, host=self.host,
+                                port=self.port)
+        return conn
+
+    def __enter__(self):
+        self.conn = self.connect()
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.conn.close()
+
+    def query_db(self, query: str):
+        conn = self.connect()
+        cursor = conn.cursor()
+
+        cursor.execute(query)
+        result = cursor.fetchone()
+
+        cursor.close()
+        conn.close()
+
+        return result
 
     def create_engine(self):
-        conn_str = f'{self.dialect}+{self.driver}://{pgdb_username}:{pgdb_password}@{self.host}:{self.port}/' \
+        conn_str = f'{self.dialect}+{self.driver}://{self.user}:{self.password}@{self.host}:{self.port}/' \
                    f'{self.database}'
         engine = create_engine(conn_str)
 
