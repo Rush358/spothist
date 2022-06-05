@@ -3,8 +3,8 @@ import psycopg2
 
 from sqlalchemy import create_engine
 
-from settings import pgdb_username, pgdb_password
 from utils.config import get_configs
+from settings import pgdb_username, pgdb_password
 
 
 class Postgres:
@@ -15,8 +15,8 @@ class Postgres:
         self.host = self.config['host']
         self.port = self.config['port']
         self.database = self.config['database']
-        self.user = 'postgres'
-        self.password = 'postmanpat'
+        self.user = pgdb_username
+        self.password = pgdb_password
 
     def connect(self):
         conn = psycopg2.connect(database=self.database, user=self.user, password=self.password, host=self.host,

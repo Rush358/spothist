@@ -34,22 +34,32 @@ def get_last_run() -> int:
     file_path = ROOT_DIR / 'logs' / 'spothist.log'
 
     # Open log file and get most recent run's information
-    with open(file_path, 'r') as log_file:
-        lines = log_file.readlines()
-
     try:
+        with open(file_path, 'r') as log_file:
+            lines = log_file.readlines()
         str_last_run = lines[-1]  # Most recent run is logged to last line in file
-    except IndexError:
-        print('No previous successful runs found.')  # TODO: Log this instead
-        return None
-    else:
+
         # Extract substring between first set of square brackets and replace comma w/ period before milliseconds
         str_last_run = str_last_run[str_last_run.find('[') + 1:str_last_run.find(']')].replace(',', '.')
 
         # Convert string representation to datetime and convert result to unix timestamp in milliseconds
         timestamp_last_run = int(datetime.fromisoformat(str_last_run).timestamp() * 1000)
 
-        return timestamp_last_run
+    except FileNotFoundError: # TODO: Log this instead
+        print('Log file doesn\'t exist.')
+        return None
+
+    except IndexError:
+        print('Log file is empty.')
+        return None
+
+    except ValueError:
+        print('Unable to extract time of last successful run from run log.')
+        return None
+
+    else:
+        # print(str_last_run)
+        return timestamp_last_run  # TODO: Check if timestamp is valid (e.g. not in the future)
 
 
 if __name__ == '__main__':
