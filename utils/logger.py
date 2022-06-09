@@ -1,28 +1,31 @@
 import logging
+import time
 from datetime import datetime
 
+import prefect
 from prefect import task
 
 from definitions import ROOT_DIR
 
 
-def logger_handler():
+def create_logger():
     """
-    Set up and return custom logging handler to write Prefect logs to file.
+    Get base Prefect logger and add custom file handler and formatting.
     """
 
-    # Specify and set up file handler properties (of the logger handler)
+    logger = prefect.context.get('logger')
+    logger.setLevel(logging.INFO)
+
     file_path = ROOT_DIR / 'logs' / 'spothist.log'
-    formatter = logging.Formatter('[%(asctime)s] %(levelname)s - %(name)s | %(message)s')
-
     file_handler = logging.FileHandler(file_path)
+
+    formatter = logging.Formatter('[%(asctime)s] %(levelname)s - %(name)s | %(message)s')
+    formatter.converter = time.gmtime  # Set logger time as UTC
     file_handler.setFormatter(formatter)
 
-    # Create logger handler and add specified file handler
-    custom_handler = logging.getLogger(__name__)
-    custom_handler.addHandler(file_handler)
+    logger.addHandler(file_handler)
 
-    return custom_handler
+    return logger
 
 
 @task
@@ -58,7 +61,6 @@ def get_last_run() -> int:
         return None
 
     else:
-        # print(str_last_run)
         return timestamp_last_run  # TODO: Check if timestamp is valid (e.g. not in the future)
 
 
